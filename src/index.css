@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+@import 'tailwindcss';
+
+:root {
+  --bg: #f0eee6;
+  --ink: #333333;
+  --brand-blue: #0020d9;
+  --brand-orange: #fb6604;
+  --brand-pink: #f90cc6;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* Soft mesh flash on linked words — same brand palette as the logo */
+@keyframes mesh-link-flash {
+  0%,
+  100% {
+    background-position: 0% 50%;
+    filter: brightness(1);
+  }
+  40% {
+    background-position: 55% 50%;
+    filter: brightness(1.15);
+  }
+  70% {
+    background-position: 100% 50%;
+    filter: brightness(1.05);
+  }
+}
+
+.mesh-link-char {
+  animation: mesh-link-flash 3.6s ease-in-out infinite;
+}
+
+.mesh-link:hover .mesh-link-char,
+.mesh-link:focus-visible .mesh-link-char {
+  filter: brightness(1.2);
+  animation-duration: 1.6s;
+}
