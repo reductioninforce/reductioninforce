@@ -28,6 +28,8 @@ function jitter(i: number) {
   }
 }
 
+type FocusLink = 'outcasts' | 'products' | null
+
 type Props = {
   onOutcastsEnter: () => void
   onOutcastsLeave: () => void
@@ -129,8 +131,6 @@ function ScribbleChars({
 
   return <>{nodes}</>
 }
-
-type FocusLink = 'outcasts' | 'products' | null
 
 export default function ScribbleCopy({
   onOutcastsEnter,
