@@ -23,7 +23,7 @@ function App() {
 
   const closeReveal = useCallback(() => {
     window.clearTimeout(leaveTimer.current)
-    leaveTimer.current = window.setTimeout(() => setReveal(null), 1000)
+    leaveTimer.current = window.setTimeout(() => setReveal(null), 2000)
   }, [])
 
   const onFocusPoint = useCallback((x: number, y: number, radius: number) => {

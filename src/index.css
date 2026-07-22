@@ -57,3 +57,14 @@ body {
   filter: brightness(1.2);
   animation-duration: 1.6s;
 }
+
+/* Logo: monochrome idle, brand mesh lights up on hover */
+.rif-logo .logo-mesh {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.rif-logo:hover .logo-mesh,
+.rif-logo:focus-visible .logo-mesh {
+  opacity: 1;
+}

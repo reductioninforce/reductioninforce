@@ -180,7 +180,7 @@ export default function Logo({ onGoHome }: Props) {
     <a
       href="/"
       aria-label="RIF — Reduction in Force — Home"
-      className="fixed top-6 left-6 z-50 sm:top-8 sm:left-8"
+      className="rif-logo fixed top-6 left-6 z-50 sm:top-8 sm:left-8"
       style={{ pointerEvents: 'auto' }}
       onMouseEnter={handleEnter}
       onFocus={handleEnter}
@@ -251,7 +251,12 @@ export default function Logo({ onGoHome }: Props) {
               opacity={opacity}
               transform={`translate(${o.x} ${o.y}) rotate(${o.r} ${letter.ox} ${letter.oy})`}
             >
-              <path d={letter.d} fill="url(#rifMeshFill)" />
+              <path d={letter.d} fill="#333333" />
+              <path
+                className="logo-mesh"
+                d={letter.d}
+                fill="url(#rifMeshFill)"
+              />
             </g>
           )
         })}
