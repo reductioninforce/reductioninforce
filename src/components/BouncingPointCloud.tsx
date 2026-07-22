@@ -69,6 +69,16 @@ export default function BouncingPointCloud({
       vy: (Math.random() * 2 - 1) * 2,
     }
 
+    const mouse = { x: 0, y: 0, hasMoved: false }
+    // Slow drift toward cursor (fraction of remaining distance per frame @ ~18fps)
+    const mouseFollow = 0.005
+
+    const onPointerMove = (e: PointerEvent) => {
+      mouse.x = e.clientX
+      mouse.y = e.clientY
+      mouse.hasMoved = true
+    }
+
     const calculateField = (x: number, y: number) => {
       const dx = x - ball.x
       const dy = y - ball.y
@@ -169,6 +179,11 @@ export default function BouncingPointCloud({
         if (!exploding) {
           ball.x += ball.vx
           ball.y += ball.vy
+
+          if (mouse.hasMoved) {
+            ball.x += (mouse.x - ball.x) * mouseFollow
+            ball.y += (mouse.y - ball.y) * mouseFollow
+          }
 
           if (ball.x - ball.radius < 0) {
             ball.x = ball.radius
@@ -319,10 +334,12 @@ export default function BouncingPointCloud({
     resize()
     animationFrameId = requestAnimationFrame(animate)
     window.addEventListener('resize', resize)
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
 
     return () => {
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', resize)
+      window.removeEventListener('pointermove', onPointerMove)
       ctx.clearRect(0, 0, width, height)
       points.length = 0
     }
