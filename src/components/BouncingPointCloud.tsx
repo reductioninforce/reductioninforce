@@ -71,7 +71,7 @@ export default function BouncingPointCloud({
 
     const mouse = { x: 0, y: 0, hasMoved: false }
     // Slow drift toward cursor (fraction of remaining distance per frame @ ~18fps)
-    const mouseFollow = 0.005
+    const mouseFollow = 0.006
 
     const onPointerMove = (e: PointerEvent) => {
       mouse.x = e.clientX
