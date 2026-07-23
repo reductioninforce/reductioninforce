@@ -4,6 +4,9 @@ import { projects } from '../data/projects'
 type Props = {
   open: boolean
   focus: { x: number; y: number; radius: number } | null
+  closing: boolean
+  leaveToken: number
+  leaveMs: number
   onKeepOpen: () => void
   onClose: () => void
 }
@@ -11,6 +14,9 @@ type Props = {
 export default function ProjectsReveal({
   open,
   focus,
+  closing,
+  leaveToken,
+  leaveMs,
   onKeepOpen,
   onClose,
 }: Props) {
@@ -30,7 +36,7 @@ export default function ProjectsReveal({
       aria-hidden={!open}
       onMouseEnter={onKeepOpen}
       onMouseLeave={onClose}
-      className="fixed z-[8] flex max-w-[min(94vw,720px)] flex-wrap justify-center gap-3 sm:gap-4"
+      className="fixed z-[8] grid max-w-[min(92vw,640px)] grid-cols-2 gap-4 sm:gap-6"
       style={{
         left: focus ? focus.x : '50%',
         top: focus ? focus.y : '45%',
@@ -42,13 +48,33 @@ export default function ProjectsReveal({
         pointerEvents: open ? 'auto' : 'none',
       }}
     >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-[2px] overflow-hidden"
+        style={{
+          opacity: open && closing ? 1 : 0,
+          transition: 'opacity 0.15s ease',
+        }}
+      >
+        {open && closing ? (
+          <div
+            key={leaveToken}
+            className="overlay-leave-bar h-full w-full origin-left"
+            style={{
+              background: 'rgba(51, 51, 51, 0.45)',
+              animationDuration: `${leaveMs}ms`,
+            }}
+          />
+        ) : null}
+      </div>
+
       {projects.map((project) => (
         <a
           key={project.id}
           href={project.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group min-w-0 basis-[calc(50%-0.4rem)] no-underline sm:basis-[calc(25%-0.75rem)]"
+          className="group min-w-0 no-underline"
           style={{ color: 'inherit' }}
         >
           <div
@@ -63,9 +89,9 @@ export default function ProjectsReveal({
               boxShadow: `inset 0 0 0 1.5px ${project.ink}55`,
             }}
           />
-          <div className="mt-2.5 text-left sm:mt-3">
+          <div className="mt-3 text-left sm:mt-4">
             <h2
-              className="m-0 text-[1rem] tracking-tight sm:text-[1.15rem]"
+              className="m-0 text-[1.15rem] tracking-tight sm:text-[1.35rem]"
               style={{
                 fontFamily: 'Inter, system-ui, sans-serif',
                 fontWeight: 500,
@@ -75,10 +101,10 @@ export default function ProjectsReveal({
               {project.title}
             </h2>
             <p
-              className="mt-1 mb-0 text-[0.7rem] leading-relaxed sm:text-[0.75rem]"
+              className="mt-1.5 mb-0 text-[0.75rem] leading-relaxed sm:text-[0.8125rem]"
               style={{
                 fontFamily: 'Inter, system-ui, sans-serif',
-                color: 'rgba(51, 51, 51, 0.55)',
+                color: 'rgba(51, 51, 51, 0.58)',
               }}
             >
               {project.subtitle}

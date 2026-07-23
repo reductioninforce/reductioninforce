@@ -7,6 +7,8 @@ import ProjectsReveal from './components/ProjectsReveal'
 
 type Reveal = 'about' | 'projects' | null
 
+const LEAVE_MS = 2000
+
 function App() {
   const [reveal, setReveal] = useState<Reveal>(null)
   const [focus, setFocus] = useState<{
@@ -14,16 +16,24 @@ function App() {
     y: number
     radius: number
   } | null>(null)
+  const [closing, setClosing] = useState(false)
+  const [leaveToken, setLeaveToken] = useState(0)
   const leaveTimer = useRef(0)
 
   const openReveal = useCallback((next: Reveal) => {
     window.clearTimeout(leaveTimer.current)
+    setClosing(false)
     setReveal(next)
   }, [])
 
   const closeReveal = useCallback(() => {
     window.clearTimeout(leaveTimer.current)
-    leaveTimer.current = window.setTimeout(() => setReveal(null), 2000)
+    setLeaveToken((t) => t + 1)
+    setClosing(true)
+    leaveTimer.current = window.setTimeout(() => {
+      setReveal(null)
+      setClosing(false)
+    }, LEAVE_MS)
   }, [])
 
   const onFocusPoint = useCallback((x: number, y: number, radius: number) => {
@@ -39,18 +49,25 @@ function App() {
       <AboutReveal
         open={reveal === 'about'}
         focus={focus}
+        closing={closing}
+        leaveToken={leaveToken}
+        leaveMs={LEAVE_MS}
         onKeepOpen={() => openReveal('about')}
         onClose={closeReveal}
       />
       <ProjectsReveal
         open={reveal === 'projects'}
         focus={focus}
+        closing={closing}
+        leaveToken={leaveToken}
+        leaveMs={LEAVE_MS}
         onKeepOpen={() => openReveal('projects')}
         onClose={closeReveal}
       />
       <Logo
         onGoHome={() => {
           window.clearTimeout(leaveTimer.current)
+          setClosing(false)
           setReveal(null)
         }}
       />

@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react'
 type Props = {
   open: boolean
   focus: { x: number; y: number; radius: number } | null
+  closing: boolean
+  leaveToken: number
+  leaveMs: number
   onKeepOpen: () => void
   onClose: () => void
 }
@@ -22,7 +25,15 @@ const PEOPLE = [
   },
 ] as const
 
-export default function AboutReveal({ open, focus, onKeepOpen, onClose }: Props) {
+export default function AboutReveal({
+  open,
+  focus,
+  closing,
+  leaveToken,
+  leaveMs,
+  onKeepOpen,
+  onClose,
+}: Props) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -51,6 +62,26 @@ export default function AboutReveal({ open, focus, onKeepOpen, onClose }: Props)
         pointerEvents: open ? 'auto' : 'none',
       }}
     >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-[2px] overflow-hidden"
+        style={{
+          opacity: open && closing ? 1 : 0,
+          transition: 'opacity 0.15s ease',
+        }}
+      >
+        {open && closing ? (
+          <div
+            key={leaveToken}
+            className="overlay-leave-bar h-full w-full origin-left"
+            style={{
+              background: 'rgba(51, 51, 51, 0.45)',
+              animationDuration: `${leaveMs}ms`,
+            }}
+          />
+        ) : null}
+      </div>
+
       {PEOPLE.map((person) => (
         <article key={person.id} className="min-w-0 flex-1 basis-0">
           <div

@@ -68,3 +68,18 @@ body {
 .rif-logo:focus-visible .logo-mesh {
   opacity: 1;
 }
+
+@keyframes overlay-leave-bar {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.overlay-leave-bar {
+  animation-name: overlay-leave-bar;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
